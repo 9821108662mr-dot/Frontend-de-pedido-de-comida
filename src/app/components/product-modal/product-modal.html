@@ -3,7 +3,7 @@
     <div class="product-modal" role="dialog" aria-modal="true">
       <button class="modal-close" (click)="close.emit()" aria-label="Cerrar">✕</button>
       <div class="modal-image-wrapper">
-        <img class="modal-image" [src]="product.image" [alt]="product.name" />
+        <img class="modal-image" [ngSrc]="product.image" width="600" height="400" [alt]="product.name" />
         <span class="modal-category-badge">{{ product.category }}</span>
       </div>
       <div class="modal-body">

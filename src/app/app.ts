@@ -13,8 +13,10 @@ import { Toast } from './components/toast/toast';
     <app-navbar />
     <app-hero />
     <router-outlet />
-    <app-cart />
-    <app-toast />
+    @defer (on idle) {
+      <app-cart />
+      <app-toast />
+    }
   `
 })
 export class App {}

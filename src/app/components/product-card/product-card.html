@@ -9,9 +9,9 @@
     <img
       class="card-image"
       [class.loaded]="imageLoaded()"
-      [src]="product.image"
+      [ngSrc]="product.image"
+      fill
       [alt]="product.name"
-      loading="lazy"
       (load)="onImageLoad()"
     />
     <span class="card-category">{{ getEmoji(product.category) }} {{ product.category }}</span>

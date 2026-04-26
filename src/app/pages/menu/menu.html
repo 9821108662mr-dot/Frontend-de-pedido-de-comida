@@ -111,9 +111,11 @@
 
 <!-- Product Modal -->
 @if (selectedProduct()) {
-  <app-product-modal
-    [product]="selectedProduct()!"
-    [open]="modalOpen()"
-    (close)="closeModal()"
-  />
+  @defer (on immediate) {
+    <app-product-modal
+      [product]="selectedProduct()!"
+      [open]="modalOpen()"
+      (close)="closeModal()"
+    />
+  }
 }

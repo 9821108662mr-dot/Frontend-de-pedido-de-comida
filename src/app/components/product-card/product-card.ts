@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FastFoodService, Product } from '../../services/fast-food';
 import { ToastService } from '../../services/toast.service';
 import { CurrencyMxnPipe } from '../../pipes/currency-mxn.pipe';
@@ -7,7 +7,7 @@ import { CurrencyMxnPipe } from '../../pipes/currency-mxn.pipe';
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, CurrencyMxnPipe],
+  imports: [CommonModule, CurrencyMxnPipe, NgOptimizedImage],
   templateUrl: './product-card.html',
   styleUrl: './product-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush

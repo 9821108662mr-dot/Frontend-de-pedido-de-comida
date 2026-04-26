@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter, signal, inject, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FastFoodService, Product } from '../../services/fast-food';
 import { CurrencyMxnPipe } from '../../pipes/currency-mxn.pipe';
 
 @Component({
   selector: 'app-product-modal',
   standalone: true,
-  imports: [CommonModule, CurrencyMxnPipe],
+  imports: [CommonModule, CurrencyMxnPipe, NgOptimizedImage],
   templateUrl: './product-modal.html',
   styleUrl: './product-modal.css',
   changeDetection: ChangeDetectionStrategy.OnPush
