@@ -71,6 +71,37 @@
           </div>
         </div>
 
+        @if (checkoutForm.get('payment')?.value === 'card') {
+          <div class="card-details-box">
+            <h4 class="card-details-title">💳 Detalles de Tarjeta</h4>
+            
+            <div class="form-group">
+              <label for="cardNumber">Número de Tarjeta</label>
+              <input type="text" id="cardNumber" formControlName="cardNumber" placeholder="0000 0000 0000 0000" maxlength="16" />
+              @if (checkoutForm.get('cardNumber')?.invalid && checkoutForm.get('cardNumber')?.touched) {
+                <span class="error-msg">Ingresa 16 dígitos sin espacios.</span>
+              }
+            </div>
+
+            <div class="card-row">
+              <div class="form-group flex-1">
+                <label for="expiry">Fecha (MM/YY)</label>
+                <input type="text" id="expiry" formControlName="expiry" placeholder="12/25" maxlength="5" />
+                @if (checkoutForm.get('expiry')?.invalid && checkoutForm.get('expiry')?.touched) {
+                  <span class="error-msg">Formato MM/YY.</span>
+                }
+              </div>
+              <div class="form-group flex-1">
+                <label for="cvv">CVV</label>
+                <input type="password" id="cvv" formControlName="cvv" placeholder="123" maxlength="4" />
+                @if (checkoutForm.get('cvv')?.invalid && checkoutForm.get('cvv')?.touched) {
+                  <span class="error-msg">Mínimo 3 dígitos.</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
         <button type="submit" class="checkout-submit-btn" [disabled]="svc.cartItems().length === 0">
           Confirmar Pedido — {{ svc.cartTotal() | currencyMxn }}
         </button>

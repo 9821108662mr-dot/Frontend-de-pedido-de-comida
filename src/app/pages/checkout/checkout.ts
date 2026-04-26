@@ -26,8 +26,37 @@ export class CheckoutPage {
     name: ['', [Validators.required, Validators.minLength(3)]],
     address: ['', [Validators.required]],
     phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-    payment: ['cash', [Validators.required]]
+    payment: ['cash', [Validators.required]],
+    cardNumber: [{ value: '', disabled: true }, [Validators.required, Validators.pattern('^[0-9]{16}$')]],
+    expiry: [{ value: '', disabled: true }, [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])\/([0-9]{2})$')]],
+    cvv: [{ value: '', disabled: true }, [Validators.required, Validators.pattern('^[0-9]{3,4}$')]]
   });
+
+  constructor() {
+    this.checkoutForm.get('payment')?.valueChanges.subscribe(val => {
+      const cardFields = ['cardNumber', 'expiry', 'cvv'];
+      if (val === 'card') {
+        cardFields.forEach(f => {
+          this.checkoutForm.get(f)?.enable();
+          this.checkoutForm.get(f)?.setValidators(this.getValidatorsForField(f));
+          this.checkoutForm.get(f)?.updateValueAndValidity();
+        });
+      } else {
+        cardFields.forEach(f => {
+          this.checkoutForm.get(f)?.disable();
+          this.checkoutForm.get(f)?.clearValidators();
+          this.checkoutForm.get(f)?.updateValueAndValidity();
+        });
+      }
+    });
+  }
+
+  getValidatorsForField(f: string) {
+    if (f === 'cardNumber') return [Validators.required, Validators.pattern('^[0-9]{16}$')];
+    if (f === 'expiry') return [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])\/([0-9]{2})$')];
+    if (f === 'cvv') return [Validators.required, Validators.pattern('^[0-9]{3,4}$')];
+    return [];
+  }
 
   onSubmit() {
     if (this.checkoutForm.invalid) {

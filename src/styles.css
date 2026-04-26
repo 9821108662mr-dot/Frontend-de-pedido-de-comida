@@ -587,4 +587,14 @@ body {
 .checkout-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,107,53,0.4); }
 .checkout-submit-btn:disabled { background: var(--surface2); color: var(--text3); cursor: not-allowed; transform: none; box-shadow: none; }
 
+/* Credit card box */
+.card-details-box {
+  background: var(--surface2); border: 1px dashed var(--border); border-radius: var(--radius-sm);
+  padding: 20px; display: flex; flex-direction: column; gap: 16px;
+  animation: fadeUp 0.3s ease both;
+}
+.card-details-title { font-size: 1rem; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+.card-row { display: flex; gap: 16px; }
+.flex-1 { flex: 1; }
+
 
