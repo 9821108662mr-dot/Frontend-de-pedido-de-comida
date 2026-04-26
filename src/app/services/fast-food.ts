@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -26,8 +26,10 @@ export interface Order {
 export class FastFoodService {
   private readonly API_URL = 'https://devsapihub.com/api-fast-food';
 
-  // Cart state
-  cartItems = signal<CartItem[]>([]);
+  // Cart state (persisted in localStorage)
+  cartItems = signal<CartItem[]>(
+    JSON.parse(localStorage.getItem('fastbite-cart') ?? '[]')
+  );
   cartOpen = signal(false);
   searchTerm = signal('');
 
@@ -48,7 +50,12 @@ export class FastFoodService {
     this.cartItems().reduce((sum, i) => sum + i.product.price * i.quantity, 0)
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Sync cart to localStorage automatically whenever it changes
+    effect(() => {
+      localStorage.setItem('fastbite-cart', JSON.stringify(this.cartItems()));
+    });
+  }
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.API_URL);
