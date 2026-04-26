@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FastFoodService } from '../../services/fast-food';
 import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -16,6 +17,7 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
 export class Navbar {
   svc = inject(FastFoodService);
   themeSvc = inject(ThemeService);
+  authSvc = inject(AuthService);
   translate = inject(TranslateService);
   cartPulse = signal(false);
 
