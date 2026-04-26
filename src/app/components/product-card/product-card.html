@@ -1,13 +1,38 @@
-<div class="product-card" (click)="openModal.emit(product)">
+<div
+  class="product-card"
+  [style.animation-delay]="index * 60 + 'ms'"
+  (click)="openModal.emit(product)"
+>
+  <!-- Image with blur-in effect -->
   <div class="card-image-wrapper">
-    <img class="card-image" [src]="product.image" [alt]="product.name" loading="lazy" />
+    <div class="img-placeholder" [class.hidden]="imageLoaded()"></div>
+    <img
+      class="card-image"
+      [class.loaded]="imageLoaded()"
+      [src]="product.image"
+      [alt]="product.name"
+      loading="lazy"
+      (load)="onImageLoad()"
+    />
     <span class="card-category">{{ getEmoji(product.category) }} {{ product.category }}</span>
   </div>
+
   <div class="card-body">
     <p class="card-name">{{ product.name }}</p>
     <div class="card-footer">
       <span class="card-price">${{ product.price.toFixed(2) }}</span>
-      <button class="card-add-btn" (click)="onAdd($event)" [attr.aria-label]="'Agregar ' + product.name">+</button>
+      <button
+        class="card-add-btn"
+        [class.adding]="adding()"
+        (click)="onAdd($event)"
+        [attr.aria-label]="'Agregar ' + product.name"
+      >
+        @if (adding()) {
+          <span class="add-check">✓</span>
+        } @else {
+          <span>+</span>
+        }
+      </button>
     </div>
   </div>
 </div>

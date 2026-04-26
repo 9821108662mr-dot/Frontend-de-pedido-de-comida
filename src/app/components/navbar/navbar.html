@@ -14,7 +14,18 @@
         (input)="onSearch($any($event.target).value)"
       />
     </div>
-    <button class="cart-btn" id="cartBtn" (click)="svc.toggleCart()">
+
+    <!-- Theme toggle -->
+    <button class="theme-toggle" id="themeToggle" (click)="themeSvc.toggle()" [title]="themeSvc.isDark() ? 'Modo claro' : 'Modo oscuro'">
+      @if (themeSvc.isDark()) {
+        <span class="theme-icon">☀️</span>
+      } @else {
+        <span class="theme-icon">🌙</span>
+      }
+    </button>
+
+    <!-- Cart button -->
+    <button class="cart-btn" id="cartBtn" (click)="onCartClick()">
       <span class="cart-icon">🛒</span>
       @if (svc.cartCount() > 0) {
         <span class="cart-badge">{{ svc.cartCount() }}</span>

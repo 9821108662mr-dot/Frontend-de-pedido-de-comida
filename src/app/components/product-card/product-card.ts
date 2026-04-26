@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FastFoodService, Product } from '../../services/fast-food';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-product-card',
@@ -11,9 +12,14 @@ import { FastFoodService, Product } from '../../services/fast-food';
 })
 export class ProductCard {
   @Input() product!: Product;
+  @Input() index = 0;
   @Output() openModal = new EventEmitter<Product>();
 
   svc = inject(FastFoodService);
+  toastSvc = inject(ToastService);
+
+  imageLoaded = signal(false);
+  adding = signal(false);
 
   categoryEmoji: Record<string, string> = {
     cafe: '☕', dona: '🍩', galletas: '🍪',
@@ -24,9 +30,15 @@ export class ProductCard {
     return this.categoryEmoji[cat] ?? '🍽️';
   }
 
+  onImageLoad() {
+    this.imageLoaded.set(true);
+  }
+
   onAdd(e: Event) {
     e.stopPropagation();
+    this.adding.set(true);
     this.svc.addToCart(this.product);
-    this.svc.openCart();
+    this.toastSvc.show(`${this.product.name} agregado 🛒`, 'success', this.getEmoji(this.product.category));
+    setTimeout(() => this.adding.set(false), 600);
   }
 }
