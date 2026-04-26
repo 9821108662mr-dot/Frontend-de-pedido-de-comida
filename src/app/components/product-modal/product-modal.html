@@ -8,14 +8,14 @@
       </div>
       <div class="modal-body">
         <h2 class="modal-name">{{ product.name }}</h2>
-        <p class="modal-price">${{ product.price.toFixed(2) }}</p>
+        <p class="modal-price">{{ product.price | currencyMxn }}</p>
         <div class="modal-qty">
           <button class="qty-btn" (click)="decrement()" id="qtyMinus">−</button>
           <span class="qty-value">{{ qty() }}</span>
           <button class="qty-btn" (click)="increment()" id="qtyPlus">+</button>
         </div>
         <button class="modal-add-btn" (click)="addToCart()">
-          Agregar {{ qty() }} al carrito 🛒 — ${{ (product.price * qty()).toFixed(2) }}
+          Agregar {{ qty() }} al carrito 🛒 — {{ (product.price * qty()) | currencyMxn }}
         </button>
       </div>
     </div>

@@ -1,30 +1,17 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FastFoodService } from '../../services/fast-food';
-import { ToastService } from '../../services/toast.service';
+import { CurrencyMxnPipe } from '../../pipes/currency-mxn.pipe';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, CurrencyMxnPipe],
   templateUrl: './cart.html',
-  styleUrl: './cart.css'
+  styleUrl: './cart.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Cart {
   svc = inject(FastFoodService);
-  toastSvc = inject(ToastService);
-  orderDone = signal(false);
-  orderId = signal('');
-  showHistory = signal(false);
-
-  checkout() {
-    const id = this.svc.saveOrder(this.svc.cartItems(), this.svc.cartTotal());
-    this.orderId.set(id);
-    this.svc.clearCart();
-    this.svc.closeCart();
-    this.orderDone.set(true);
-  }
-
-  closeOrder() { this.orderDone.set(false); }
-  toggleHistory() { this.showHistory.update(v => !v); }
 }

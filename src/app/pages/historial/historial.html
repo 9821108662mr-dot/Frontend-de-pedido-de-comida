@@ -1,1 +1,37 @@
-<p>historial works!</p>
+<main class="main-content" style="padding-top: 120px;">
+  <section class="filters-section">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+      <h2 class="section-title" style="margin-bottom: 0;">🕐 Historial de Pedidos</h2>
+      <a routerLink="/" class="history-btn">⬅️ Volver al Menú</a>
+    </div>
+  </section>
+
+  <div class="history-panel-page">
+    @if (svc.orderHistory().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">🕐</div>
+        <h3>Sin pedidos aún</h3>
+        <p>¡Haz tu primer pedido y aparecerá aquí!</p>
+      </div>
+    } @else {
+      @for (order of svc.orderHistory(); track order.id) {
+        <div class="history-item-page">
+          <div class="history-item-header">
+            <span class="history-order-id">Orden #{{ order.id }}</span>
+            <span class="history-date">{{ order.date }}</span>
+          </div>
+          <div class="history-items-list">
+            @for (item of order.items; track item.product.id) {
+              <div class="history-product-row">
+                <span class="history-product-qty">{{ item.quantity }}×</span>
+                <span class="history-product-name">{{ item.product.name }}</span>
+                <span class="history-product-price">{{ (item.product.price * item.quantity) | currencyMxn }}</span>
+              </div>
+            }
+          </div>
+          <div class="history-total">Total: {{ order.total | currencyMxn }}</div>
+        </div>
+      }
+    }
+  </div>
+</main>

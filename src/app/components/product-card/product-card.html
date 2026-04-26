@@ -30,7 +30,7 @@
   <div class="card-body">
     <p class="card-name">{{ product.name }}</p>
     <div class="card-footer">
-      <span class="card-price">${{ product.price.toFixed(2) }}</span>
+      <span class="card-price">{{ product.price | currencyMxn }}</span>
       <button
         class="card-add-btn"
         [class.adding]="adding()"

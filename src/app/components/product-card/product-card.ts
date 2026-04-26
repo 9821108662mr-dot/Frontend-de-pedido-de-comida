@@ -1,14 +1,16 @@
-import { Component, Input, Output, EventEmitter, inject, signal, computed } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FastFoodService, Product } from '../../services/fast-food';
 import { ToastService } from '../../services/toast.service';
+import { CurrencyMxnPipe } from '../../pipes/currency-mxn.pipe';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CurrencyMxnPipe],
   templateUrl: './product-card.html',
-  styleUrl: './product-card.css'
+  styleUrl: './product-card.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductCard {
   @Input() product!: Product;

@@ -1,1 +1,88 @@
-<p>checkout works!</p>
+<main class="main-content" style="padding-top: 120px; max-width: 800px;">
+  <section class="filters-section">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+      <h2 class="section-title" style="margin-bottom: 0;">🚀 Finalizar Pedido</h2>
+      <a routerLink="/" class="history-btn">⬅️ Volver</a>
+    </div>
+  </section>
+
+  @if (!orderDone()) {
+    <div class="checkout-grid">
+      <!-- Order Summary -->
+      <div class="checkout-summary">
+        <h3>Resumen de orden</h3>
+        @if (svc.cartItems().length === 0) {
+          <p>Tu carrito está vacío.</p>
+        } @else {
+          <div class="checkout-items">
+            @for (item of svc.cartItems(); track item.product.id) {
+              <div class="checkout-item">
+                <span>{{ item.quantity }}× {{ item.product.name }}</span>
+                <span>{{ (item.product.price * item.quantity) | currencyMxn }}</span>
+              </div>
+            }
+          </div>
+          <div class="checkout-total">
+            <span>Total a pagar</span>
+            <span>{{ svc.cartTotal() | currencyMxn }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Checkout Form -->
+      <form class="checkout-form" [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+        <h3>Tus datos</h3>
+        
+        <div class="form-group">
+          <label for="name">Nombre completo</label>
+          <input type="text" id="name" formControlName="name" placeholder="Ej. Juan Pérez" />
+          @if (checkoutForm.get('name')?.invalid && checkoutForm.get('name')?.touched) {
+            <span class="error-msg">El nombre debe tener al menos 3 caracteres.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="address">Dirección de entrega</label>
+          <input type="text" id="address" formControlName="address" placeholder="Ej. Av. Principal 123" />
+          @if (checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched) {
+            <span class="error-msg">La dirección es requerida.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Teléfono</label>
+          <input type="tel" id="phone" formControlName="phone" placeholder="Ej. 5512345678" />
+          @if (checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched) {
+            <span class="error-msg">Ingresa un número válido de 10 dígitos.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Método de pago</label>
+          <div class="payment-options">
+            <label class="payment-radio">
+              <input type="radio" formControlName="payment" value="cash" />
+              <span>💵 Efectivo al entregar</span>
+            </label>
+            <label class="payment-radio">
+              <input type="radio" formControlName="payment" value="card" />
+              <span>💳 Tarjeta al entregar</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="checkout-submit-btn" [disabled]="svc.cartItems().length === 0">
+          Confirmar Pedido — {{ svc.cartTotal() | currencyMxn }}
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div class="order-success">
+      <div class="order-animation">🎉</div>
+      <h2>¡Pedido Realizado con Éxito!</h2>
+      <p>Tu orden está siendo preparada. ¡Llegará muy pronto!</p>
+      <div class="order-id">Orden #{{ orderId() }}</div>
+      <a routerLink="/" class="order-close-btn" style="display: inline-block; text-decoration: none;">Volver al Inicio 🍔</a>
+    </div>
+  }
+</main>

@@ -1,13 +1,15 @@
-import { Component, Input, Output, EventEmitter, signal, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FastFoodService, Product } from '../../services/fast-food';
+import { CurrencyMxnPipe } from '../../pipes/currency-mxn.pipe';
 
 @Component({
   selector: 'app-product-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CurrencyMxnPipe],
   templateUrl: './product-modal.html',
-  styleUrl: './product-modal.css'
+  styleUrl: './product-modal.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductModal {
   @Input() product!: Product;
