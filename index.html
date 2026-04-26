@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastBite — Menú Digital</title>
+  <meta name="description" content="Descubre nuestra deliciosa selección de comida rápida: pizzas, hamburguesas, cafés, donas y más. Ordena ahora en FastBite." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-brand">
+      <span class="brand-icon">🍔</span>
+      <span class="brand-name">Fast<span class="brand-accent">Bite</span></span>
+    </div>
+    <div class="navbar-actions">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar producto..." />
+      </div>
+      <button class="cart-btn" id="cartBtn" aria-label="Abrir carrito">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="hero-content">
+      <p class="hero-tag">🔥 Menú del día disponible</p>
+      <h1 class="hero-title">Sabor que te <span class="gradient-text">enamora</span></h1>
+      <p class="hero-subtitle">Descubre nuestra selección de comida fresca, artesanal y deliciosa — lista en minutos.</p>
+      <button class="hero-cta" id="heroCta">Ver Menú Completo →</button>
+    </div>
+    <div class="hero-bg"></div>
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content" id="menuSection">
+
+    <!-- Category Filters -->
+    <section class="filters-section">
+      <h2 class="section-title">Explora el Menú</h2>
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-category="all" id="filter-all">
+          <span class="filter-emoji">🍽️</span> Todos
+        </button>
+        <button class="filter-btn" data-category="hamburguesa" id="filter-hamburguesa">
+          <span class="filter-emoji">🍔</span> Hamburguesas
+        </button>
+        <button class="filter-btn" data-category="pizza" id="filter-pizza">
+          <span class="filter-emoji">🍕</span> Pizzas
+        </button>
+        <button class="filter-btn" data-category="cafe" id="filter-cafe">
+          <span class="filter-emoji">☕</span> Cafés
+        </button>
+        <button class="filter-btn" data-category="dona" id="filter-dona">
+          <span class="filter-emoji">🍩</span> Donas
+        </button>
+        <button class="filter-btn" data-category="galletas" id="filter-galletas">
+          <span class="filter-emoji">🍪</span> Galletas
+        </button>
+        <button class="filter-btn" data-category="pastel" id="filter-pastel">
+          <span class="filter-emoji">🎂</span> Pasteles
+        </button>
+      </div>
+    </section>
+
+    <!-- Loading Skeleton -->
+    <div class="loading-grid" id="loadingGrid">
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+    </div>
+
+    <!-- Error state -->
+    <div class="error-state" id="errorState" style="display:none;">
+      <div class="error-icon">⚠️</div>
+      <h3>No pudimos cargar el menú</h3>
+      <p>Verifica tu conexión e intenta de nuevo.</p>
+      <button class="retry-btn" id="retryBtn">Reintentar</button>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" id="productsGrid"></div>
+
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-icon">🔍</div>
+      <h3>Sin resultados</h3>
+      <p>No encontramos productos que coincidan con tu búsqueda.</p>
+    </div>
+
+  </main>
+
+  <!-- ===== CART SIDEBAR ===== -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar" aria-label="Carrito de compras">
+    <div class="cart-header">
+      <h2 class="cart-title">🛒 Tu Pedido</h2>
+      <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <div class="cart-empty-icon">🍽️</div>
+        <p>Tu carrito está vacío</p>
+        <span>¡Agrega algo delicioso!</span>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+      <div class="cart-delivery">
+        <span>Envío</span>
+        <span class="delivery-free">GRATIS</span>
+      </div>
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn">Realizar Pedido 🚀</button>
+      <button class="clear-cart-btn" id="clearCartBtn">Vaciar carrito</button>
+    </div>
+  </aside>
+
+  <!-- ===== PRODUCT MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="product-modal" id="productModal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+      <div class="modal-image-wrapper">
+        <img class="modal-image" id="modalImage" src="" alt="" />
+        <span class="modal-category-badge" id="modalCategoryBadge"></span>
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-name" id="modalName"></h2>
+        <p class="modal-price" id="modalPrice"></p>
+        <div class="modal-qty">
+          <button class="qty-btn" id="qtyMinus" aria-label="Disminuir cantidad">−</button>
+          <span class="qty-value" id="qtyValue">1</span>
+          <button class="qty-btn" id="qtyPlus" aria-label="Aumentar cantidad">+</button>
+        </div>
+        <button class="modal-add-btn" id="modalAddBtn">Agregar al carrito 🛒</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SUCCESS TOAST ===== -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ===== ORDER SUCCESS MODAL ===== -->
+  <div class="order-overlay" id="orderOverlay" style="display:none;">
+    <div class="order-success" id="orderSuccess">
+      <div class="order-animation">🎉</div>
+      <h2>¡Pedido Realizado!</h2>
+      <p>Tu orden está siendo preparada con todo el amor del mundo. ¡Gracias por elegirnos!</p>
+      <div class="order-id">Orden #<span id="orderIdDisplay"></span></div>
+      <button class="order-close-btn" id="orderCloseBtn">¡Entendido! 🍔</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <span class="brand-icon">🍔</span>
+    <span class="brand-name">Fast<span class="brand-accent">Bite</span></span>
+  </div>
+  <div class="navbar-actions">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input
+        id="searchInput"
+        type="text"
+        class="search-input"
+        placeholder="Buscar producto..."
+        (input)="onSearch($any($event.target).value)"
+      />
+    </div>
+    <button class="cart-btn" id="cartBtn" (click)="svc.toggleCart()">
+      <span class="cart-icon">🛒</span>
+      @if (svc.cartCount() > 0) {
+        <span class="cart-badge">{{ svc.cartCount() }}</span>
+      }
+    </button>
+  </div>
+</nav>

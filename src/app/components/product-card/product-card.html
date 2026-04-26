@@ -1,0 +1,13 @@
+<div class="product-card" (click)="openModal.emit(product)">
+  <div class="card-image-wrapper">
+    <img class="card-image" [src]="product.image" [alt]="product.name" loading="lazy" />
+    <span class="card-category">{{ getEmoji(product.category) }} {{ product.category }}</span>
+  </div>
+  <div class="card-body">
+    <p class="card-name">{{ product.name }}</p>
+    <div class="card-footer">
+      <span class="card-price">${{ product.price.toFixed(2) }}</span>
+      <button class="card-add-btn" (click)="onAdd($event)" [attr.aria-label]="'Agregar ' + product.name">+</button>
+    </div>
+  </div>
+</div>
