@@ -1,0 +1,28 @@
+{
+  "NAVBAR": {
+    "SEARCH": "Buscar producto...",
+    "LIGHT_MODE": "Modo claro",
+    "DARK_MODE": "Modo oscuro"
+  },
+  "MENU": {
+    "ALL": "Todos",
+    "BURGERS": "Hamburguesas",
+    "PIZZAS": "Pizzas",
+    "COFFEES": "Cafés",
+    "DONUTS": "Donas",
+    "COOKIES": "Galletas",
+    "CAKES": "Pasteles"
+  },
+  "CART": {
+    "TITLE": "🛒 Tu Pedido",
+    "HISTORY": "Historial",
+    "EMPTY": "Tu carrito está vacío",
+    "EMPTY_SUB": "¡Agrega algo delicioso!",
+    "SUBTOTAL": "Subtotal",
+    "SHIPPING": "Envío",
+    "FREE": "GRATIS",
+    "TOTAL": "Total",
+    "CHECKOUT": "Realizar Pedido 🚀",
+    "CLEAR": "Vaciar carrito"
+  }
+}

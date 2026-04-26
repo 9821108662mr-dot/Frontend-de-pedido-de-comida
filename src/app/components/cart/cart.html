@@ -4,7 +4,7 @@
 <!-- Sidebar -->
 <aside class="cart-sidebar" [class.open]="svc.cartOpen()">
   <div class="cart-header">
-    <h2 class="cart-title">🛒 Tu Pedido</h2>
+    <h2 class="cart-title">{{ 'CART.TITLE' | translate }}</h2>
     <div class="cart-header-actions">
       <a
         routerLink="/historial"
@@ -13,7 +13,7 @@
         title="Historial de pedidos"
         style="text-decoration: none;"
       >
-        🕐 Historial
+        🕐 {{ 'CART.HISTORY' | translate }}
         @if (svc.orderHistory().length > 0) {
           <span class="history-count">{{ svc.orderHistory().length }}</span>
         }
@@ -27,8 +27,8 @@
     @if (svc.cartItems().length === 0) {
       <div class="cart-empty">
         <div class="cart-empty-icon">🍽️</div>
-        <p>Tu carrito está vacío</p>
-        <span>¡Agrega algo delicioso!</span>
+        <p>{{ 'CART.EMPTY' | translate }}</p>
+        <span>{{ 'CART.EMPTY_SUB' | translate }}</span>
       </div>
     } @else {
       @for (item of svc.cartItems(); track item.product.id) {
@@ -52,19 +52,19 @@
   @if (svc.cartItems().length > 0) {
     <div class="cart-footer">
       <div class="cart-subtotal">
-        <span>Subtotal</span>
+        <span>{{ 'CART.SUBTOTAL' | translate }}</span>
         <span>{{ svc.cartTotal() | currencyMxn }}</span>
       </div>
       <div class="cart-delivery">
-        <span>Envío</span>
-        <span class="delivery-free">GRATIS</span>
+        <span>{{ 'CART.SHIPPING' | translate }}</span>
+        <span class="delivery-free">{{ 'CART.FREE' | translate }}</span>
       </div>
       <div class="cart-total">
-        <span>Total</span>
+        <span>{{ 'CART.TOTAL' | translate }}</span>
         <span>{{ svc.cartTotal() | currencyMxn }}</span>
       </div>
-      <a routerLink="/checkout" class="checkout-btn" (click)="svc.closeCart()" style="text-decoration: none;">Realizar Pedido 🚀</a>
-      <button class="clear-cart-btn" (click)="svc.clearCart()">Vaciar carrito</button>
+      <a routerLink="/checkout" class="checkout-btn" (click)="svc.closeCart()" style="text-decoration: none;">{{ 'CART.CHECKOUT' | translate }}</a>
+      <button class="clear-cart-btn" (click)="svc.clearCart()">{{ 'CART.CLEAR' | translate }}</button>
     </div>
   }
 </aside>

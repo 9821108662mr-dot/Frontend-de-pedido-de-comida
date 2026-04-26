@@ -1,0 +1,28 @@
+{
+  "NAVBAR": {
+    "SEARCH": "Search product...",
+    "LIGHT_MODE": "Light mode",
+    "DARK_MODE": "Dark mode"
+  },
+  "MENU": {
+    "ALL": "All",
+    "BURGERS": "Burgers",
+    "PIZZAS": "Pizzas",
+    "COFFEES": "Coffees",
+    "DONUTS": "Donuts",
+    "COOKIES": "Cookies",
+    "CAKES": "Cakes"
+  },
+  "CART": {
+    "TITLE": "🛒 Your Order",
+    "HISTORY": "History",
+    "EMPTY": "Your cart is empty",
+    "EMPTY_SUB": "Add something delicious!",
+    "SUBTOTAL": "Subtotal",
+    "SHIPPING": "Shipping",
+    "FREE": "FREE",
+    "TOTAL": "Total",
+    "CHECKOUT": "Checkout 🚀",
+    "CLEAR": "Clear cart"
+  }
+}

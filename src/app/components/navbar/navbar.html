@@ -10,13 +10,18 @@
         id="searchInput"
         type="text"
         class="search-input"
-        placeholder="Buscar producto..."
+        [placeholder]="'NAVBAR.SEARCH' | translate"
         (input)="onSearch($any($event.target).value)"
       />
     </div>
 
+    <!-- Lang toggle -->
+    <button class="theme-toggle" (click)="toggleLang()" title="Cambiar idioma">
+      <span class="theme-icon">{{ translate.currentLang === 'en' ? '🇺🇸' : '🇲🇽' }}</span>
+    </button>
+
     <!-- Theme toggle -->
-    <button class="theme-toggle" id="themeToggle" (click)="themeSvc.toggle()" [title]="themeSvc.isDark() ? 'Modo claro' : 'Modo oscuro'">
+    <button class="theme-toggle" id="themeToggle" (click)="themeSvc.toggle()" [title]="themeSvc.isDark() ? ('NAVBAR.LIGHT_MODE' | translate) : ('NAVBAR.DARK_MODE' | translate)">
       @if (themeSvc.isDark()) {
         <span class="theme-icon">☀️</span>
       } @else {

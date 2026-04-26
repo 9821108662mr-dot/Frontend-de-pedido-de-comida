@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FastFoodService, Product } from '../../services/fast-food';
 import { ProductCard } from '../../components/product-card/product-card';
 import { ProductModal } from '../../components/product-modal/product-modal';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Category { key: string; label: string; emoji: string; }
 type SortOrder = 'default' | 'asc' | 'desc';
@@ -10,9 +11,10 @@ type SortOrder = 'default' | 'asc' | 'desc';
 @Component({
   selector: 'app-menu-page',
   standalone: true,
-  imports: [CommonModule, ProductCard, ProductModal],
+  imports: [CommonModule, ProductCard, ProductModal, TranslateModule],
   templateUrl: './menu.html',
-  styleUrl: './menu.css'
+  styleUrl: './menu.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuPage implements OnInit {
   svc = inject(FastFoodService);
@@ -27,13 +29,13 @@ export class MenuPage implements OnInit {
   showFavoritesOnly = signal(false);
 
   categories: Category[] = [
-    { key: 'all',         label: 'Todos',       emoji: '🍽️' },
-    { key: 'hamburguesa', label: 'Hamburguesas', emoji: '🍔' },
-    { key: 'pizza',       label: 'Pizzas',       emoji: '🍕' },
-    { key: 'cafe',        label: 'Cafés',        emoji: '☕' },
-    { key: 'dona',        label: 'Donas',        emoji: '🍩' },
-    { key: 'galletas',    label: 'Galletas',     emoji: '🍪' },
-    { key: 'pastel',      label: 'Pasteles',     emoji: '🎂' },
+    { key: 'all',         label: 'MENU.ALL',       emoji: '🍽️' },
+    { key: 'hamburguesa', label: 'MENU.BURGERS', emoji: '🍔' },
+    { key: 'pizza',       label: 'MENU.PIZZAS',       emoji: '🍕' },
+    { key: 'cafe',        label: 'MENU.COFFEES',        emoji: '☕' },
+    { key: 'dona',        label: 'MENU.DONUTS',        emoji: '🍩' },
+    { key: 'galletas',    label: 'MENU.COOKIES',     emoji: '🍪' },
+    { key: 'pastel',      label: 'MENU.CAKES',     emoji: '🎂' },
   ];
 
   filteredProducts = computed(() => {

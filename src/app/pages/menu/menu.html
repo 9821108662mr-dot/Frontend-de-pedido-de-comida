@@ -13,7 +13,7 @@
             [id]="'filter-' + cat.key"
             (click)="setCategory(cat.key)"
           >
-            <span class="filter-emoji">{{ cat.emoji }}</span> {{ cat.label }}
+            <span class="filter-emoji">{{ cat.emoji }}</span> {{ cat.label | translate }}
           </button>
         }
       </div>
