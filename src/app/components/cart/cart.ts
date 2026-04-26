@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FastFoodService } from '../../services/fast-food';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-cart',
@@ -11,15 +12,19 @@ import { FastFoodService } from '../../services/fast-food';
 })
 export class Cart {
   svc = inject(FastFoodService);
+  toastSvc = inject(ToastService);
   orderDone = signal(false);
   orderId = signal('');
+  showHistory = signal(false);
 
   checkout() {
-    this.orderId.set(Math.floor(Math.random() * 90000 + 10000).toString());
+    const id = this.svc.saveOrder(this.svc.cartItems(), this.svc.cartTotal());
+    this.orderId.set(id);
     this.svc.clearCart();
     this.svc.closeCart();
     this.orderDone.set(true);
   }
 
   closeOrder() { this.orderDone.set(false); }
+  toggleHistory() { this.showHistory.update(v => !v); }
 }

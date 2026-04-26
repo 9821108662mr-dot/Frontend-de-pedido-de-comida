@@ -15,6 +15,16 @@
       (load)="onImageLoad()"
     />
     <span class="card-category">{{ getEmoji(product.category) }} {{ product.category }}</span>
+
+    <!-- Favorite button -->
+    <button
+      class="fav-btn"
+      [class.active]="isFav()"
+      (click)="onFavorite($event)"
+      [attr.aria-label]="isFav() ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+    >
+      {{ isFav() ? '❤️' : '🤍' }}
+    </button>
   </div>
 
   <div class="card-body">

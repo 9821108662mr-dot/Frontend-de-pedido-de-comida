@@ -5,52 +5,98 @@
 <aside class="cart-sidebar" [class.open]="svc.cartOpen()">
   <div class="cart-header">
     <h2 class="cart-title">🛒 Tu Pedido</h2>
-    <button class="cart-close" (click)="svc.closeCart()">✕</button>
-  </div>
-
-  <div class="cart-items">
-    @if (svc.cartItems().length === 0) {
-      <div class="cart-empty">
-        <div class="cart-empty-icon">🍽️</div>
-        <p>Tu carrito está vacío</p>
-        <span>¡Agrega algo delicioso!</span>
-      </div>
-    } @else {
-      @for (item of svc.cartItems(); track item.product.id) {
-        <div class="cart-item">
-          <img class="cart-item-img" [src]="item.product.image" [alt]="item.product.name" />
-          <div class="cart-item-info">
-            <p class="cart-item-name">{{ item.product.name }}</p>
-            <div class="cart-item-controls">
-              <button class="ci-qty-btn" (click)="svc.updateQty(item.product.id, -1)">−</button>
-              <span class="ci-qty">{{ item.quantity }}</span>
-              <button class="ci-qty-btn" (click)="svc.updateQty(item.product.id, 1)">+</button>
-            </div>
-          </div>
-          <span class="cart-item-price">${{ (item.product.price * item.quantity).toFixed(2) }}</span>
-          <button class="cart-item-remove" (click)="svc.removeFromCart(item.product.id)">🗑️</button>
-        </div>
-      }
-    }
-  </div>
-
-  @if (svc.cartItems().length > 0) {
-    <div class="cart-footer">
-      <div class="cart-subtotal">
-        <span>Subtotal</span>
-        <span>${{ svc.cartTotal().toFixed(2) }}</span>
-      </div>
-      <div class="cart-delivery">
-        <span>Envío</span>
-        <span class="delivery-free">GRATIS</span>
-      </div>
-      <div class="cart-total">
-        <span>Total</span>
-        <span>${{ svc.cartTotal().toFixed(2) }}</span>
-      </div>
-      <button class="checkout-btn" (click)="checkout()">Realizar Pedido 🚀</button>
-      <button class="clear-cart-btn" (click)="svc.clearCart()">Vaciar carrito</button>
+    <div class="cart-header-actions">
+      <button
+        class="history-btn"
+        [class.active]="showHistory()"
+        (click)="toggleHistory()"
+        title="Historial de pedidos"
+      >
+        🕐 Historial
+        @if (svc.orderHistory().length > 0) {
+          <span class="history-count">{{ svc.orderHistory().length }}</span>
+        }
+      </button>
+      <button class="cart-close" (click)="svc.closeCart()">✕</button>
     </div>
+  </div>
+
+  <!-- Order History panel -->
+  @if (showHistory()) {
+    <div class="history-panel">
+      @if (svc.orderHistory().length === 0) {
+        <div class="cart-empty">
+          <div class="cart-empty-icon">🕐</div>
+          <p>Sin pedidos aún</p>
+          <span>¡Haz tu primer pedido!</span>
+        </div>
+      } @else {
+        @for (order of svc.orderHistory(); track order.id) {
+          <div class="history-item">
+            <div class="history-item-header">
+              <span class="history-order-id">Orden #{{ order.id }}</span>
+              <span class="history-date">{{ order.date }}</span>
+            </div>
+            <div class="history-items-list">
+              @for (item of order.items; track item.product.id) {
+                <span class="history-product">
+                  {{ item.quantity }}× {{ item.product.name }}
+                </span>
+              }
+            </div>
+            <div class="history-total">Total: ${{ order.total.toFixed(2) }}</div>
+          </div>
+        }
+      }
+    </div>
+  }
+
+  <!-- Cart items -->
+  @if (!showHistory()) {
+    <div class="cart-items">
+      @if (svc.cartItems().length === 0) {
+        <div class="cart-empty">
+          <div class="cart-empty-icon">🍽️</div>
+          <p>Tu carrito está vacío</p>
+          <span>¡Agrega algo delicioso!</span>
+        </div>
+      } @else {
+        @for (item of svc.cartItems(); track item.product.id) {
+          <div class="cart-item">
+            <img class="cart-item-img" [src]="item.product.image" [alt]="item.product.name" />
+            <div class="cart-item-info">
+              <p class="cart-item-name">{{ item.product.name }}</p>
+              <div class="cart-item-controls">
+                <button class="ci-qty-btn" (click)="svc.updateQty(item.product.id, -1)">−</button>
+                <span class="ci-qty">{{ item.quantity }}</span>
+                <button class="ci-qty-btn" (click)="svc.updateQty(item.product.id, 1)">+</button>
+              </div>
+            </div>
+            <span class="cart-item-price">${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+            <button class="cart-item-remove" (click)="svc.removeFromCart(item.product.id)">🗑️</button>
+          </div>
+        }
+      }
+    </div>
+
+    @if (svc.cartItems().length > 0) {
+      <div class="cart-footer">
+        <div class="cart-subtotal">
+          <span>Subtotal</span>
+          <span>${{ svc.cartTotal().toFixed(2) }}</span>
+        </div>
+        <div class="cart-delivery">
+          <span>Envío</span>
+          <span class="delivery-free">GRATIS</span>
+        </div>
+        <div class="cart-total">
+          <span>Total</span>
+          <span>${{ svc.cartTotal().toFixed(2) }}</span>
+        </div>
+        <button class="checkout-btn" (click)="checkout()">Realizar Pedido 🚀</button>
+        <button class="clear-cart-btn" (click)="svc.clearCart()">Vaciar carrito</button>
+      </div>
+    }
   }
 </aside>
 
@@ -60,7 +106,7 @@
     <div class="order-success">
       <div class="order-animation">🎉</div>
       <h2>¡Pedido Realizado!</h2>
-      <p>Tu orden está siendo preparada con todo el amor del mundo. ¡Gracias por elegirnos!</p>
+      <p>Tu orden está siendo preparada. Puedes ver tu historial en el 🕐 del carrito.</p>
       <div class="order-id">Orden #{{ orderId() }}</div>
       <button class="order-close-btn" (click)="closeOrder()">¡Entendido! 🍔</button>
     </div>

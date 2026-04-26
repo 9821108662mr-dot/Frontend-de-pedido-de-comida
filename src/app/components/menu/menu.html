@@ -2,17 +2,63 @@
   <!-- Filters -->
   <section class="filters-section">
     <h2 class="section-title">Explora el Menú</h2>
-    <div class="filters">
-      @for (cat of categories; track cat.key) {
+
+    <div class="filters-row">
+      <!-- Category filters -->
+      <div class="filters">
+        @for (cat of categories; track cat.key) {
+          <button
+            class="filter-btn"
+            [class.active]="activeCategory() === cat.key"
+            [id]="'filter-' + cat.key"
+            (click)="setCategory(cat.key)"
+          >
+            <span class="filter-emoji">{{ cat.emoji }}</span> {{ cat.label }}
+          </button>
+        }
+      </div>
+
+      <!-- Controls: sort + favorites -->
+      <div class="controls-row">
+        <!-- Sort -->
+        <div class="sort-group">
+          <button
+            class="sort-btn"
+            [class.active]="sortOrder() === 'default'"
+            id="sortDefault"
+            (click)="setSort('default')"
+            title="Orden original"
+          >🔀 Todos</button>
+          <button
+            class="sort-btn"
+            [class.active]="sortOrder() === 'asc'"
+            id="sortAsc"
+            (click)="setSort('asc')"
+            title="Precio menor a mayor"
+          >⬆️ Menor</button>
+          <button
+            class="sort-btn"
+            [class.active]="sortOrder() === 'desc'"
+            id="sortDesc"
+            (click)="setSort('desc')"
+            title="Precio mayor a menor"
+          >⬇️ Mayor</button>
+        </div>
+
+        <!-- Favorites toggle -->
         <button
-          class="filter-btn"
-          [class.active]="activeCategory() === cat.key"
-          [id]="'filter-' + cat.key"
-          (click)="setCategory(cat.key)"
+          class="fav-toggle-btn"
+          [class.active]="showFavoritesOnly()"
+          id="favToggle"
+          (click)="toggleFavorites()"
         >
-          <span class="filter-emoji">{{ cat.emoji }}</span> {{ cat.label }}
+          {{ showFavoritesOnly() ? '❤️' : '🤍' }}
+          Favoritos
+          @if (svc.favorites().length > 0) {
+            <span class="fav-count">{{ svc.favorites().length }}</span>
+          }
         </button>
-      }
+      </div>
     </div>
   </section>
 
@@ -37,6 +83,12 @@
 
   <!-- Products grid -->
   @if (!loading() && !error()) {
+    <!-- Result count -->
+    <p class="result-count">
+      {{ filteredProducts().length }} producto{{ filteredProducts().length !== 1 ? 's' : '' }}
+      @if (showFavoritesOnly()) { <span class="fav-label">❤️ favoritos</span> }
+    </p>
+
     @if (filteredProducts().length > 0) {
       <div class="products-grid">
         @for (product of filteredProducts(); track product.id; let i = $index) {
@@ -49,9 +101,9 @@
       </div>
     } @else {
       <div class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <h3>Sin resultados</h3>
-        <p>No encontramos productos que coincidan con tu búsqueda.</p>
+        <div class="empty-icon">{{ showFavoritesOnly() ? '🤍' : '🔍' }}</div>
+        <h3>{{ showFavoritesOnly() ? 'Sin favoritos' : 'Sin resultados' }}</h3>
+        <p>{{ showFavoritesOnly() ? 'Marca productos con ❤️ para verlos aquí.' : 'No encontramos productos que coincidan.' }}</p>
       </div>
     }
   }

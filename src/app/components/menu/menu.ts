@@ -5,6 +5,7 @@ import { ProductCard } from '../product-card/product-card';
 import { ProductModal } from '../product-modal/product-modal';
 
 interface Category { key: string; label: string; emoji: string; }
+type SortOrder = 'default' | 'asc' | 'desc';
 
 @Component({
   selector: 'app-menu',
@@ -22,6 +23,8 @@ export class Menu implements OnInit {
   activeCategory = signal('all');
   selectedProduct = signal<Product | null>(null);
   modalOpen = signal(false);
+  sortOrder = signal<SortOrder>('default');
+  showFavoritesOnly = signal(false);
 
   categories: Category[] = [
     { key: 'all',         label: 'Todos',       emoji: '🍽️' },
@@ -37,8 +40,15 @@ export class Menu implements OnInit {
     let list = this.allProducts();
     const cat = this.activeCategory();
     const term = this.svc.searchTerm().toLowerCase().trim();
+    const favOnly = this.showFavoritesOnly();
+    const sort = this.sortOrder();
+
     if (cat !== 'all') list = list.filter(p => p.category === cat);
     if (term) list = list.filter(p => p.name.toLowerCase().includes(term));
+    if (favOnly) list = list.filter(p => this.svc.isFavorite(p.id));
+    if (sort === 'asc')  list = [...list].sort((a, b) => a.price - b.price);
+    if (sort === 'desc') list = [...list].sort((a, b) => b.price - a.price);
+
     return list;
   });
 
@@ -54,12 +64,13 @@ export class Menu implements OnInit {
   }
 
   setCategory(key: string) { this.activeCategory.set(key); }
+  setSort(order: SortOrder) { this.sortOrder.set(order); }
+  toggleFavorites() { this.showFavoritesOnly.update(v => !v); }
 
   openModal(product: Product) {
     this.selectedProduct.set(product);
     this.modalOpen.set(true);
   }
-
   closeModal() { this.modalOpen.set(false); }
 
   skeletons = Array(8).fill(0);
