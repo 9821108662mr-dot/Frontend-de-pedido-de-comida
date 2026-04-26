@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from './app.routes';
 import { cachingInterceptor } from './interceptors/caching.interceptor';
+import { errorInterceptor } from './interceptors/error.interceptor';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -11,7 +12,7 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withInterceptors([cachingInterceptor]), withFetch()),
+    provideHttpClient(withInterceptors([cachingInterceptor, errorInterceptor]), withFetch()),
     provideRouter(routes),
     provideAnimationsAsync(),
     provideTranslateService({
