@@ -22,26 +22,30 @@ export interface Order {
   total: number;
 }
 
+function getSavedData<T>(key: string, defaultValue: T): T {
+  if (typeof localStorage !== 'undefined') {
+    const item = localStorage.getItem(key);
+    if (item) {
+      try { return JSON.parse(item); } catch { return defaultValue; }
+    }
+  }
+  return defaultValue;
+}
+
 @Injectable({ providedIn: 'root' })
 export class FastFoodService {
   private readonly API_URL = 'https://devsapihub.com/api-fast-food';
 
   // Cart state (persisted in localStorage)
-  cartItems = signal<CartItem[]>(
-    JSON.parse(localStorage.getItem('fastbite-cart') ?? '[]')
-  );
+  cartItems = signal<CartItem[]>(getSavedData<CartItem[]>('fastbite-cart', []));
   cartOpen = signal(false);
   searchTerm = signal('');
 
   // Favorites (persisted in localStorage)
-  favorites = signal<number[]>(
-    JSON.parse(localStorage.getItem('fastbite-favorites') ?? '[]')
-  );
+  favorites = signal<number[]>(getSavedData<number[]>('fastbite-favorites', []));
 
   // Order history (persisted in localStorage)
-  orderHistory = signal<Order[]>(
-    JSON.parse(localStorage.getItem('fastbite-orders') ?? '[]')
-  );
+  orderHistory = signal<Order[]>(getSavedData<Order[]>('fastbite-orders', []));
 
   cartCount = computed(() =>
     this.cartItems().reduce((sum, i) => sum + i.quantity, 0)
@@ -53,7 +57,9 @@ export class FastFoodService {
   constructor(private http: HttpClient) {
     // Sync cart to localStorage automatically whenever it changes
     effect(() => {
-      localStorage.setItem('fastbite-cart', JSON.stringify(this.cartItems()));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('fastbite-cart', JSON.stringify(this.cartItems()));
+      }
     });
   }
 
@@ -99,7 +105,9 @@ export class FastFoodService {
   toggleFavorite(id: number) {
     this.favorites.update(favs => {
       const updated = favs.includes(id) ? favs.filter(f => f !== id) : [...favs, id];
-      localStorage.setItem('fastbite-favorites', JSON.stringify(updated));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('fastbite-favorites', JSON.stringify(updated));
+      }
       return updated;
     });
   }
@@ -115,7 +123,9 @@ export class FastFoodService {
     };
     this.orderHistory.update(history => {
       const updated = [order, ...history].slice(0, 10); // keep last 10
-      localStorage.setItem('fastbite-orders', JSON.stringify(updated));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('fastbite-orders', JSON.stringify(updated));
+      }
       return updated;
     });
     return orderId;

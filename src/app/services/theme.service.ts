@@ -1,21 +1,33 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   isDark = signal(true);
 
   constructor() {
-    const saved = localStorage.getItem('fastbite-theme');
-    if (saved === 'light') {
-      this.isDark.set(false);
-      document.documentElement.setAttribute('data-theme', 'light');
+    if (typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem('fastbite-theme');
+      if (saved) {
+        this.isDark.set(saved === 'dark');
+      }
     }
+
+    effect(() => {
+      const theme = this.isDark() ? 'dark' : 'light';
+      if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('fastbite-theme', theme);
+      }
+    });
   }
 
   toggle() {
     this.isDark.update(v => !v);
     const theme = this.isDark() ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('fastbite-theme', theme);
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
   }
 }
