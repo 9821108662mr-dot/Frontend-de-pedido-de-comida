@@ -1,23 +1,23 @@
 @if (open && product) {
-  <div class="modal-overlay" [class.open]="open" (click)="onOverlayClick($event)">
-    <div class="product-modal" role="dialog" aria-modal="true">
-      <button class="modal-close" (click)="close.emit()" aria-label="Cerrar">✕</button>
-      <div class="modal-image-wrapper">
-        <img class="modal-image" [ngSrc]="product.image" width="600" height="400" [alt]="product.name" />
-        <span class="modal-category-badge">{{ product.category }}</span>
+<div class="modal-overlay" [class.open]="open" (click)="onOverlayClick($event)">
+  <div class="product-modal" role="dialog" aria-modal="true">
+    <button class="modal-close" (click)="close.emit()" aria-label="Cerrar">✕</button>
+    <div class="modal-image-wrapper">
+      <img class="modal-image" [ngSrc]="product.image" width="600" height="400" [alt]="product.name" />
+      <span class="modal-category-badge">{{ product.category }}</span>
+    </div>
+    <div class="modal-body">
+      <h2 class="modal-name">{{ product.name }}</h2>
+      <p class="modal-price">{{ product.price | currencyMxn }}</p>
+      <div class="modal-qty">
+        <button class="qty-btn" (click)="decrement()" id="qtyMinus">−</button>
+        <span class="qty-value">{{ qty() }}</span>
+        <button class="qty-btn" (click)="increment()" id="qtyPlus">+</button>
       </div>
-      <div class="modal-body">
-        <h2 class="modal-name">{{ product.name }}</h2>
-        <p class="modal-price">{{ product.price | currencyMxn }}</p>
-        <div class="modal-qty">
-          <button class="qty-btn" (click)="decrement()" id="qtyMinus">−</button>
-          <span class="qty-value">{{ qty() }}</span>
-          <button class="qty-btn" (click)="increment()" id="qtyPlus">+</button>
-        </div>
-        <button class="modal-add-btn" (click)="addToCart()">
-          Agregar {{ qty() }} al carrito 🛒 — {{ (product.price * qty()) | currencyMxn }}
-        </button>
-      </div>
+      <button class="modal-add-btn" (click)="addToCart()">
+        Agregar {{ qty() }} al carrito 🛒 — {{ (product.price * qty()) | currencyMxn }}
+      </button>
     </div>
   </div>
+</div>
 }
