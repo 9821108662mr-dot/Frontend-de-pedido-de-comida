@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, signal, computed, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal, computed, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FastFoodService, Product } from '../../services/fast-food';
 import { ProductCard } from '../../components/product-card/product-card';
 import { ProductModal } from '../../components/product-modal/product-modal';
@@ -54,7 +54,15 @@ export class MenuPage implements OnInit {
     return list;
   });
 
-  ngOnInit() { this.loadProducts(); }
+  platformId = inject(PLATFORM_ID);
+
+  ngOnInit() { 
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadProducts(); 
+    } else {
+      this.loading.set(false);
+    }
+  }
 
   loadProducts() {
     this.loading.set(true);
