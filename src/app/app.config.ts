@@ -2,6 +2,7 @@ import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { IMAGE_CONFIG } from '@angular/common';
 import { routes } from './app.routes';
 import { cachingInterceptor } from './interceptors/caching.interceptor';
 import { errorInterceptor } from './interceptors/error.interceptor';
@@ -12,6 +13,12 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {
+      provide: IMAGE_CONFIG,
+      useValue: {
+        domains: ['devsapihub.com']
+      }
+    },
     provideHttpClient(withInterceptors([cachingInterceptor, errorInterceptor]), withFetch()),
     provideRouter(routes),
     provideAnimationsAsync(),
