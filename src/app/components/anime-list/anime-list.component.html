@@ -1,0 +1,22 @@
+<div class="anime-container">
+  <h2>Top Animes de MyAnimeList</h2>
+  
+  <div *ngIf="loading" class="loading-state">
+    <p>Cargando animes...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+  </div>
+
+  <div class="anime-grid" *ngIf="!loading && !error">
+    <div class="anime-card" *ngFor="let anime of animes">
+      <img [src]="anime.images.jpg.image_url" [alt]="anime.title" class="anime-img">
+      <div class="anime-info">
+        <h3>{{ anime.title }}</h3>
+        <p class="score">⭐ {{ anime.score }}</p>
+        <p class="synopsis">{{ anime.synopsis | slice:0:100 }}...</p>
+      </div>
+    </div>
+  </div>
+</div>
